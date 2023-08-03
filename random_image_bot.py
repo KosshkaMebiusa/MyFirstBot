@@ -1,9 +1,7 @@
 import time
 import requests
-import pprint as p
+from consts import API_URL, BOT_TOKEN
 
-API_BOT_URL = 'https://api.telegram.org/bot'
-BOT_TOKEN = '978109895:AAF4HaYciZeBgeNgOy7maYxyrceYGbCR9HI'
 API_CAT_URL = 'https://api.thecatapi.com/v1/images/search'
 API_DOG_URL = 'https://random.dog/woof.json'
 API_FOX_URL = 'https://randomfox.ca/floof/'
@@ -20,7 +18,7 @@ chat_id:int
 while counter < 100:
             print('attempt = ', counter)
 
-            updates = requests.get(f'{API_BOT_URL}{BOT_TOKEN}/getUpdates?offset={offset+1}').json()
+            updates = requests.get(f'{API_URL}{BOT_TOKEN}/getUpdates?offset={offset+1}').json()
             if updates['result']:
                 for result in updates['result']:
                     offset = result['update_id']
@@ -37,9 +35,9 @@ while counter < 100:
                             link = chat_response.json()['image']
 
                     if chat_response.status_code == 200:
-                        requests.get(f'{API_BOT_URL}{BOT_TOKEN}/sendPhoto?chat_id={chat_id}&photo={link}')
+                        requests.get(f'{API_URL}{BOT_TOKEN}/sendPhoto?chat_id={chat_id}&photo={link}')
                     else:
-                        requests.get(f'{API_BOT_URL}{BOT_TOKEN}/sendMessage?chat_id={chat_id}&text={ERROR_TEXT}')
+                        requests.get(f'{API_URL}{BOT_TOKEN}/sendMessage?chat_id={chat_id}&text={ERROR_TEXT}')
 
             time.sleep(1)
             counter += 1
